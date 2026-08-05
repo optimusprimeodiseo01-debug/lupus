@@ -1,0 +1,40 @@
+name: TAPIZ-LUPUS CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+
+  tapiz-core:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Verificar Python
+        run: |
+          python --version
+
+      - name: Estructura Tapiz
+        run: |
+          find . -maxdepth 2 -type f
+
+      - name: Ejecutar modelo dinamico
+        run: |
+          python modelo/lupus_model.py
+
+      - name: Verificar firmas
+        run: |
+          python modelo/firma.py
+
+      - name: Guardar resultados
+        run: |
+          mkdir -p resultados
+          echo "ejecucion completada" > resultados/status.txt
